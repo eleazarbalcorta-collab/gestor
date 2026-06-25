@@ -8,46 +8,63 @@ def generar_datos(n):
 
 # --- Ordenamiento ---
 
+COMPLEJIDAD = {
+    "Bubble Sort":    {"promedio": "O(n²)", "peor": "O(n²)  — arreglo en orden inverso"},
+    "Insertion Sort": {"promedio": "O(n²)", "peor": "O(n²)  — arreglo en orden inverso"},
+    "Selection Sort": {"promedio": "O(n²)", "peor": "O(n²)  — siempre recorre todo"},
+    "Merge Sort":     {"promedio": "O(n log n)", "peor": "O(n log n) — siempre igual"},
+}
+
+
 def bubble_sort(arr):
     a = arr[:]
     n = len(a)
+    pasadas = 0
     for i in range(n):
+        pasadas += 1
         for j in range(0, n - i - 1):
             if a[j] > a[j + 1]:
                 a[j], a[j + 1] = a[j + 1], a[j]
-    return a
+    return a, pasadas
 
 
 def insertion_sort(arr):
     a = arr[:]
+    pasadas = 0
     for i in range(1, len(a)):
+        pasadas += 1
         key = a[i]
         j = i - 1
         while j >= 0 and a[j] > key:
             a[j + 1] = a[j]
             j -= 1
         a[j + 1] = key
-    return a
+    return a, pasadas
 
 
 def selection_sort(arr):
     a = arr[:]
     n = len(a)
+    pasadas = 0
     for i in range(n):
+        pasadas += 1
         min_idx = i
         for j in range(i + 1, n):
             if a[j] < a[min_idx]:
                 min_idx = j
         a[i], a[min_idx] = a[min_idx], a[i]
-    return a
+    return a, pasadas
 
 
-def merge_sort(arr):
+def merge_sort(arr, _pasadas=None):
+    if _pasadas is None:
+        _pasadas = [0]
     if len(arr) <= 1:
-        return arr[:]
+        return arr[:], _pasadas
+    _pasadas[0] += 1
     mid = len(arr) // 2
-    left = merge_sort(arr[:mid])
-    right = merge_sort(arr[mid:])
+    left, _ = merge_sort(arr[:mid], _pasadas)
+    right, _ = merge_sort(arr[mid:], _pasadas)
     result = []
     i = j = 0
     while i < len(left) and j < len(right):
@@ -59,7 +76,7 @@ def merge_sort(arr):
             j += 1
     result.extend(left[i:])
     result.extend(right[j:])
-    return result
+    return result, _pasadas
 
 
 # --- Búsqueda ---
@@ -111,8 +128,14 @@ def menu_ordenamiento(datos):
         print("Opción inválida.")
         return
     nombre, func = opciones[op]
-    _, t = medir_tiempo(func, datos)
-    print(f"{nombre} completado en {t:.6f} segundos (N={len(datos)})")
+    (_, pasadas_raw), t = medir_tiempo(func, datos)
+    pasadas = pasadas_raw[0] if isinstance(pasadas_raw, list) else pasadas_raw
+    info = COMPLEJIDAD[nombre]
+    print(f"\n--- Resultados: {nombre} ---")
+    print(f"  Tiempo de ejecución : {t:.6f} segundos")
+    print(f"  Complejidad promedio: {info['promedio']}")
+    print(f"  Peor caso           : {info['peor']}")
+    print(f"  Pasadas realizadas  : {pasadas}")
 
 
 def menu_busqueda(datos):
