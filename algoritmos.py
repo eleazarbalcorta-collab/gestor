@@ -143,7 +143,8 @@ def menu_principal():
                 print("Ingresa un número válido.")
                 continue
             datos = generar_datos(int(n))
-            print(f"Se generaron {len(datos)} datos.")
+            print(f"\nSe generaron {len(datos)} números aleatorios:")
+            print(datos)
 
         elif op == "2":
             if not datos:
