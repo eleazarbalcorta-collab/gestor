@@ -142,33 +142,18 @@ def menu_ordenamiento(datos):
 
 
 def menu_busqueda(datos):
-    opciones = {
-        "1": "Búsqueda Lineal",
-        "2": "Búsqueda Binaria",
-    }
-    print("\n  1. Búsqueda Lineal")
-    print("  2. Búsqueda Binaria")
-    op1 = input("Elige primer método: ").strip()
-    op2 = input("Elige segundo método: ").strip()
-    if op1 not in opciones or op2 not in opciones:
-        print("Opción inválida.")
-        return
-
     ordenado = sorted(datos)
     objetivo = random.choice(datos)
     print(f"\nBuscando el valor: {objetivo}")
 
-    for op in (op1, op2):
-        nombre = opciones[op]
-        if op == "1":
-            _, t = medir_tiempo(busqueda_lineal, datos, objetivo)
-            print(f"\n--- Resultados: {nombre} ---")
-            print(f"  Tiempo de ejecución : {t:.6f} segundos")
-        else:
-            _, t = medir_tiempo(busqueda_binaria, ordenado, objetivo)
-            print(f"\n--- Resultados: {nombre} ---")
-            print(f"  Tiempo de ejecución : {t:.6f} segundos")
-            print(f"  Nota                : opera sobre arreglo ordenado")
+    _, t1 = medir_tiempo(busqueda_lineal, datos, objetivo)
+    print(f"\n--- Resultados: Búsqueda Lineal ---")
+    print(f"  Tiempo de ejecución : {t1:.6f} segundos")
+
+    _, t2 = medir_tiempo(busqueda_binaria, ordenado, objetivo)
+    print(f"\n--- Resultados: Búsqueda Binaria ---")
+    print(f"  Tiempo de ejecución : {t2:.6f} segundos")
+    print(f"  Nota                : opera sobre arreglo ordenado")
 
 
 def menu_principal():
