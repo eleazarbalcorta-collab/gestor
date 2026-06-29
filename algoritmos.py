@@ -123,19 +123,22 @@ def menu_ordenamiento(datos):
     print("  2. Insertion Sort")
     print("  3. Selection Sort")
     print("  4. Merge Sort")
-    op = input("Elige algoritmo: ").strip()
-    if op not in opciones:
+    op1 = input("Elige primer algoritmo: ").strip()
+    op2 = input("Elige segundo algoritmo: ").strip()
+    if op1 not in opciones or op2 not in opciones:
         print("Opción inválida.")
         return
-    nombre, func = opciones[op]
-    (_, pasadas_raw), t = medir_tiempo(func, datos)
-    pasadas = pasadas_raw[0] if isinstance(pasadas_raw, list) else pasadas_raw
-    info = COMPLEJIDAD[nombre]
-    print(f"\n--- Resultados: {nombre} ---")
-    print(f"  Tiempo de ejecución : {t:.6f} segundos")
-    print(f"  Complejidad promedio: {info['promedio']}")
-    print(f"  Peor caso           : {info['peor']}")
-    print(f"  Pasadas realizadas  : {pasadas}")
+
+    for op in (op1, op2):
+        nombre, func = opciones[op]
+        (_, pasadas_raw), t = medir_tiempo(func, datos)
+        pasadas = pasadas_raw[0] if isinstance(pasadas_raw, list) else pasadas_raw
+        info = COMPLEJIDAD[nombre]
+        print(f"\n--- Resultados: {nombre} ---")
+        print(f"  Tiempo de ejecución : {t:.6f} segundos")
+        print(f"  Complejidad promedio: {info['promedio']}")
+        print(f"  Peor caso           : {info['peor']}")
+        print(f"  Pasadas realizadas  : {pasadas}")
 
 
 def menu_busqueda(datos):
